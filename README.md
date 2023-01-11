@@ -1,4 +1,5 @@
-# This repo is no longer maintained. Consider using `npm init vite` and selecting the `svelte` option or — if you want a full-fledged app framework and don't mind using pre-1.0 software — use [SvelteKit](https://kit.svelte.dev), the official application framework for Svelte.
+#
+![image](https://user-images.githubusercontent.com/71647622/211926731-0cce4b14-3ae1-47c4-a6f7-0c97bdf3b3f5.png)
 
 ---
 
