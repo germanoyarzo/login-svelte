@@ -1,16 +1,35 @@
 <script>
 	import { Router, Link, Route, navigate } from "svelte-routing"
 	import Login from "./pages/Login.svelte"
-	import Home from "./pages/Home.svelte"
+	import Home from "./pages/Home.svelte";
+	import users from './Data/File.json';
+  	import Register from "./pages/Register.svelte";
+
+	console.log(users)
+	
+
 	let user = null
 	var previousPath
 	$: user
 
 
+	
 	function loggedIn (event) {
 		if (event) {
-			user = { email: "germa@gmail.com",
-					 password: "1234"	
+			user = { email: "",
+					 password: ""	
+					}
+			navigate("/home")
+			console.log(user)
+		}
+	}
+
+	function registerIn (event) {
+		if (event) {
+			user = { email: "",
+					 password: "",
+					 name:"",
+					 cellphone:""
 					}
 			navigate("/home")
 			console.log(user)
@@ -41,9 +60,11 @@
 			<Route path="/"><Login on:loggedIn={loggedIn} /></Route>
 			{#if user !== null}
 			<Route path="/home"><Home /></Route>
+			
 			{:else}
 			<Route path="/"><Login on:loggedIn={loggedIn} /></Route>
 			{/if}
+			<Route path="/register"><Register on:registerIn={registerIn}/></Route>
 		</main>
 	</Router>
 </section>	
