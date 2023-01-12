@@ -1,5 +1,13 @@
 [{
+    "name": "german",
     "password": "1234",
-    "email": "germa@gmail.com"
+    "email": "germa@gmail.com",
+    "cellphone" : "2234545"
+},
+{
+    "name":"pepe",
+    "password": "1234",
+    "email": "pepe@gmail.com",
+    "cellphone" : "2234522"
 }
 ]
