@@ -36,7 +36,6 @@
     };
     console.log("debug")
   </script>
-  <form >
   <div>
     <br /><br /><br />
     <div class="form-signin">
@@ -71,20 +70,10 @@
       </p>
     </div>
   </div>
-</form>
+
   
   <style>
-     form {
-      background: rgb(156, 200, 207);
-      padding: 50px;
-      width: 250px;
-      height: 500px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0px 20px 14px 8px rgba(0, 0, 0, 0.58);
-    }
+   
     label {
       margin: 10px 0;
       align-self: flex-start;
