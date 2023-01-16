@@ -3,7 +3,7 @@
     import { auth } from "../firebase";
     import {Link} from "svelte-routing"
     import { createUserWithEmailAndPassword } from "firebase/auth";
-    
+    import Notificacion from "./Notification.svelte";
  
     
    // const navigate = useNavigate();
@@ -19,6 +19,16 @@
         [e.target.name]: e.target.value,
       };
     };
+    let messageNotification = "";
+    let showNotification = false;
+    
+    const showMessage = (message) => {
+      messageNotification = message;
+      showNotification = true;
+      setTimeout(() => {
+        showNotification = false;
+      }, 2800);
+    };
     
     const loginUser = async () => {
       try {
@@ -30,13 +40,19 @@
         navigate("/home")
         
       } catch (error) {
-        console.log(error);
-        alert(error)
+        if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password)."){
+          showMessage("Password should be at least 6 characters")
+        }else{
+          showMessage("Something is Wrong!")
+        }
+          
       }
     };
     console.log("debug")
   </script>
+  
   <div>
+    <Notificacion message={messageNotification} show={showNotification}/>
     <br /><br /><br />
     <div class="form-signin">
       <h1 class="text-center text-login">Register</h1>
@@ -73,7 +89,17 @@
 
   
   <style>
-   
+     form {
+      background: rgb(156, 200, 207);
+      padding: 50px;
+      width: 250px;
+      height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0px 20px 14px 8px rgba(0, 0, 0, 0.58);
+    }
     label {
       margin: 10px 0;
       align-self: flex-start;
