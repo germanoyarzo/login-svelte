@@ -1,74 +1,84 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+    import { navigate } from "svelte-routing";
+    import { auth } from "../firebase";
     import {Link} from "svelte-routing"
-    import { navigate } from "svelte-navigator";
-    import users from '../Data/File.json';
-    import userss from '../store/users.js'
-
+    import { createUserWithEmailAndPassword } from "firebase/auth";
     
-
+ 
     
-    let name="";
-    let cellphone ="";
-    let email = "";
-    let password = "";
-    let isLoading = false;
-    let isSuccess = false;
-    let errors = {};
+   // const navigate = useNavigate();
     
+    let credentials = {
+      email: "",
+      password: "",
+    };
     
-    const dispatch = createEventDispatcher()
-
+    const changeUser = (e) => {
+      credentials = {
+        ...credentials,
+        [e.target.name]: e.target.value,
+      };
+    };
     
-
-  
-    const handleSubmit = () => {
-
-      errors = {};
-      if (email.length === 0) {
-        errors.email = "Field should not be empty";
-      }
-      if (password.length === 0) {
-        errors.password = "Field should not be empty";
-      }
-    
-      if (Object.keys(errors).length === 0) {
-        isLoading = true;
+    const loginUser = async () => {
+      try {
+        await createUserWithEmailAndPassword(
+          auth,
+          credentials.email,
+          credentials.password
+        );
+        navigate("/home")
         
-        users.forEach(element => {
-
-          if(email===element.email && password===element.password){
-            submit({ name,email, password,cellphone })
-            .then(() => {
-                isSuccess = true;
-                isLoading = false;
-                
-            })
-            .catch(err => {
-                errors.server = err;
-                isLoading = false;
-            });
-        }else{
-            console.log("usuario incorrecto")
-        }
-        });
-
-        
+      } catch (error) {
+        console.log(error);
+        alert(error)
       }
     };
-
-    
-    function submit() {
-        dispatch("registerIn", true)
-        navigate('/home');
-    }
-    </script>
-<style>
-    form {
+    console.log("debug")
+  </script>
+  <form >
+  <div>
+    <br /><br /><br />
+    <div class="form-signin">
+      <h1 class="text-center text-login">Register</h1>
+      <div class="center">
+        <input
+          name="email"
+          type="email"
+          class="input-form"
+          placeholder="Email"
+          required
+          on:input={(e) => changeUser(e)}
+        />
+      </div>
+      <div class="center">
+        <input
+          name="password"
+          type="password"
+          class="input-form"
+          placeholder="Password"
+          on:input={(e) => changeUser(e)}
+        />
+      </div>
+      <br />
+      <div class="center">
+        <button class="button-signup fondo-color-signup" on:click={loginUser}> Create the account </button>
+      </div>
+      
+      <br />
+      <p class="text-center">
+        Do you have an account ? <Link to="/">Log in</Link>
+      </p>
+    </div>
+  </div>
+</form>
+  
+  <style>
+     form {
       background: rgb(156, 200, 207);
       padding: 50px;
-      width: 300px;
-      height: 650px;
+      width: 250px;
+      height: 500px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -82,8 +92,7 @@
     }
     input {
       border: none;
-      border-bottom: 1px solid #666;
-      background: rgb(156, 200, 207);
+      border-bottom: 1px solid #ccc;
       margin-bottom: 20px;
       transition: all 300ms ease-in-out;
       width: 100%;
@@ -91,7 +100,6 @@
     input:focus {
       outline: 0;
       border-bottom: 1px solid #666;
-      
     }
     button {
       margin-top: 20px;
@@ -126,35 +134,3 @@
       text-align: center;
     }
   </style>
-  
-  <form on:submit|preventDefault={handleSubmit}>
-
-      <h1>👤</h1>
-      <h2>Sign up</h2>
-      <label>Name</label>
-      <input name="name" placeholder="name" bind:value={name} required/>  
-
-      <label>Email</label>
-      <input name="email" placeholder="name@example.com" bind:value={email} required/>
-  
-      <label>Password</label>
-      <input name="password" type="password" bind:value={password} required/>
-    
-      <label>Cellphone</label>
-      <input name="cellphone" placeholder="22351111" bind:value={cellphone} required/>
-  
-      <button on:click={changeData}>
-        {#if isLoading}Something is Wrong!{:else}Register{/if}
-      </button>
-      <Link to="/">Cancel</Link>
-  
-      {#if Object.keys(errors).length > 0}
-        <ul class="errors">
-          {#each Object.keys(errors) as field}
-            <li>{field}: {errors[field]}</li>
-          {/each}
-        </ul>
-      {/if}
-
-  </form>
-    
