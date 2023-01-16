@@ -42,7 +42,11 @@
       } catch (error) {
         if (error.message === "Firebase: Password should be at least 6 characters (auth/weak-password)."){
           showMessage("Password should be at least 6 characters")
-        }else{
+        }else if(error.message ==="Firebase: Error (auth/email-already-in-use)."){
+          showMessage("User already in use. Please Login")
+        }
+        else{
+          console.log(error)
           showMessage("Something is Wrong!")
         }
           
